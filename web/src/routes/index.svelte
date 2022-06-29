@@ -69,10 +69,16 @@
     justify-content: center;
   }
 
+  .title {
+    color: var(--grey);
+    font-size: min(4vw, 10vh);
+  }
+
   .personal,
   .professional,
   .spiritual {
-    font-size: min(30vw, calc(90vh - 6em));
+    margin-top: -0.25em;
+    font-size: min(30vw, 60vh);
     font-weight: bold;
     color: var(--black);
   }
@@ -88,7 +94,7 @@
   .timestamp {
     color: var(--lightgrey);
     margin-top: 1em;
-    font-size: 1.5vw;
+    font-size: min(2vw, 5vh);
     text-align: center;
   }
 
@@ -100,12 +106,14 @@
     .personal,
     .professional,
     .spiritual {
-      font-size: min(30vw, calc(90vh - 4em));
+      font-size: min(30vw, 65vh);
     }
   }
 </style>
 
 <div class="col" style="height: 100%;">
+  <p class="title">How I Feel Right Now:</p>
+
   <div class="scores">
     {#key personal}
       <div class="col" style="grid-column: 1; grid-row: 1;" title="My mental health, physical health, and general happiness">
