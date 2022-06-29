@@ -1,0 +1,33 @@
+name: AutomaticHost
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - run: npm ci && npm run build
+      working-directory: web
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout --orphan gh-pages
+        git reset
+        git add web/public/* -f
+        git mv web/public/* ./ -k
+        touch .nojekyll
+        git add .nojekyll
+        git commit -m "Update hosted version"
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: gh-pages
