@@ -69,16 +69,20 @@
     justify-content: center;
   }
 
+  p {
+    margin: 0;
+  }
+
   .title {
     color: var(--grey);
-    font-size: min(4vw, 10vh);
+    text-align: center;
+    font-size: min(8vw, 20vh);
   }
 
   .personal,
   .professional,
   .spiritual {
-    margin-top: -0.25em;
-    font-size: min(30vw, 60vh);
+    font-size: min(30vw, 50vh);
     font-weight: bold;
     color: var(--black);
   }
@@ -92,8 +96,8 @@
   }
 
   .timestamp {
-    color: var(--lightgrey);
     margin-top: 1em;
+    color: var(--lightgrey);
     font-size: min(2vw, 5vh);
     text-align: center;
   }
@@ -106,7 +110,7 @@
     .personal,
     .professional,
     .spiritual {
-      font-size: min(30vw, 65vh);
+      font-size: min(30vw, 60vh);
     }
   }
 </style>
