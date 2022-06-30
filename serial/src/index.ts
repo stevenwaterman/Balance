@@ -53,5 +53,5 @@ lineStream.on("data", (data: string) => {
       spiritual = newSpiritual;
       pushUpdate();
     }
-  }, 5_000);
+  }, 1_000);
 });
