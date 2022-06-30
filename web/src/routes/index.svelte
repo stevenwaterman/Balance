@@ -116,7 +116,7 @@
 </style>
 
 <div class="col" style="height: 100%;">
-  <p class="title">How I Feel Right Now:</p>
+  <p class="title">(Live) How I Feel:</p>
 
   <div class="scores">
     {#key personal}
