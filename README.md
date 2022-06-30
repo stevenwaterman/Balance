@@ -52,6 +52,8 @@ These are just the parts I used, alternatives will work
 1. Connect all the negatives together, and all the positives together, and plug them into the Arduino with a jumper cable.
 1. Plug the display in with the jumper cables from before. The order doesn't really matter, just make sure it's consistent between them.
 1. Plug everything in to the Arduino.
+1. Put the back case on, bolt everything together
+1. Add the 3d-printed sliders on the potentiometers. If your printer is dialed in, they should push-fit nicely.
 
 **Arduino:**
 
