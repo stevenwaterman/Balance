@@ -91,3 +91,5 @@ This part's mostly automated, once you have updated the `firebaseConfig`.
 1. The web app should automatically build, storing the static site in the `gh-pages` branch. You might have to give it permission to push to your repo.
 1. Enable GitHub pages, selecting the `gh-pages` branch.
 1. Wait for it to build, then go to `<YOUR_GH_USERNAME>.github.io/Balance`
+
+Then it should all be working!
