@@ -52,6 +52,13 @@
 </script>
 
 <style>
+  :global(body) { 
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+
   .scores {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
