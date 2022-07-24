@@ -20,7 +20,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git fetch
-        git checkout origin/data -- data/
+        git checkout origin/historical-data -- data/
 
     - run: |
         npm ci
@@ -30,13 +30,13 @@ jobs:
         FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
       
     - run: |
-        git checkout data
+        git checkout historical-data
         git reset
-        git add data -f
+        git add data/ -f
         git commit -m "Nightly data download"
 
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         force: true
-        branch: data
+        branch: historical-data
