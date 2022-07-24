@@ -1,0 +1,17 @@
+{
+  "name": "balance-data-download",
+  "version": "1.0.0",
+  "author": "Steven Waterman",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "npm run build && npm start"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.0.0"
+  }
+}

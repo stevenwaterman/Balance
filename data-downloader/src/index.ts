@@ -13,7 +13,7 @@ let personal: number = 0;
 let professional: number = 0;
 let spiritual: number = 0;
 
-const credentials = JSON.parse(fs.readFileSync("../credentials.json", "utf-8"));
+const credentials = JSON.parse(fs.readFileSync("credentials.json", "utf-8"));
 const app = initializeApp({credential: cert(credentials)});
 const db = getFirestore(app);
 

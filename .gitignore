@@ -1,3 +1,2 @@
-.svelte-kit
-node_modules
 public
+credentials.json
