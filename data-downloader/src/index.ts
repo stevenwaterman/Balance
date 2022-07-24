@@ -13,7 +13,7 @@ type DataFile = Record<number, [number, number, number]>;
 
 function getCredentials(): any {
   const envCreds = process.env.FIREBASE_CREDENTIALS;
-  if (envCreds !== undefined) return envCreds;
+  if (envCreds !== undefined) return JSON.parse(envCreds);
 
   const credentials = JSON.parse(fs.readFileSync("../credentials.json", "utf-8"));
   return credentials;
