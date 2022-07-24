@@ -65,7 +65,7 @@ async function fetchData(date: Date): Promise<DataFile> {
 
 async function saveData(date: Date, data: DataFile) {
   date = toUTC(date);
-  const path = `data/${date.getUTCFullYear()}-${date.getUTCMonth() + 1}.json`;
+  const path = `../data/${date.getUTCFullYear()}-${date.getUTCMonth() + 1}.json`;
 
   const existingData: DataFile = await fsPromise
     .readFile(path, "utf-8")
@@ -77,7 +77,7 @@ async function saveData(date: Date, data: DataFile) {
     ...data
   };
 
-  await fsPromise.mkdir("data", {recursive: true})
+  await fsPromise.mkdir("../data", {recursive: true})
   await fsPromise.writeFile(path, JSON.stringify(newData), { encoding: "utf-8" });
   
 }
