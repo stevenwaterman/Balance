@@ -1,0 +1,39 @@
+name: AutomaticHost
+
+on:
+  schedule:
+    - cron:  '0 5 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+
+    - run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git checkout data -- data
+
+    - run: |
+        npm ci
+        npm run dev
+      working-directory: data-downloader
+      env:
+        FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+      
+    - run: |
+        git checkout data
+        git reset
+        git add data -f
+        git commit -m "Nightly data download"
+
+    - uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        force: true
+        branch: data
