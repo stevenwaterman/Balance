@@ -1,4 +1,4 @@
-name: AutomaticHost
+name: Nightly data download
 
 on:
   schedule:

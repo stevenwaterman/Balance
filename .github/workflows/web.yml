@@ -1,4 +1,4 @@
-name: AutomaticHost
+name: Deploy to GH Pages
 
 on:
   push:
