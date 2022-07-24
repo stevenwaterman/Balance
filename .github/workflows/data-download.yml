@@ -30,9 +30,11 @@ jobs:
         FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
       
     - run: |
+        ls
         git checkout historical-data
         git reset
         git add data/ -f
+        ls
         git commit -m "Nightly data download"
 
     - uses: ad-m/github-push-action@master
