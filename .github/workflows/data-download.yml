@@ -2,12 +2,12 @@ name: Nightly data download
 
 on:
   workflow_dispatch:
-  
+
   schedule:
     - cron:  '0 5 * * *'
 
 jobs:
-  build:
+  download:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,8 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git checkout data -- data
+        git fetch
+        git checkout data -- data/
 
     - run: |
         npm ci
