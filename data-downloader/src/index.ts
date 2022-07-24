@@ -1,57 +1,105 @@
-import { ReadlineParser, SerialPort } from "serialport";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore"
 import fs from "fs";
+import fsPromise from "fs/promises";
 
-const port = new SerialPort({
-  path: "/dev/ttyACM0",
-  baudRate: 9600
-});
+type Score = { 
+  personal: number;
+  professional: number;
+  spiritual: number;
+  timestamp: number;
+}
+type DataFile = Record<number, [number, number, number]>;
 
-let timer: NodeJS.Timeout | null = null;
-let personal: number = 0;
-let professional: number = 0;
-let spiritual: number = 0;
+function getCredentials(): any {
+  const envCreds = process.env.FIREBASE_CREDENTIALS;
+  if (envCreds !== undefined) return envCreds;
 
-const credentials = JSON.parse(fs.readFileSync("credentials.json", "utf-8"));
-const app = initializeApp({credential: cert(credentials)});
-const db = getFirestore(app);
-
-const currentDoc = db.doc("current/current");
-const historicCollection = db.collection("/historic");
-
-async function pushUpdate() {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-  const data = { personal, professional, spiritual, timestamp };
-  
-  await Promise.all([
-    currentDoc.update(data),
-    historicCollection.add(data)
-  ]);
-  console.log(`Updated ${personal}${professional}${spiritual}`);
+  const credentials = JSON.parse(fs.readFileSync("../credentials.json", "utf-8"));
+  return credentials;
 }
 
-const lineStream = port.pipe(new ReadlineParser());
-lineStream.on("data", (data: string) => {
-  const newPersonal = parseInt(data[0]);
-  const newProfessional = parseInt(data[1]);
-  const newSpiritual = parseInt(data[2]);
+const credential = cert(getCredentials());
+const app = initializeApp({credential});
+const db = getFirestore(app);
 
-  if (timer !== null) {
-    clearTimeout(timer);
+const historicCollection = db.collection("/historic");
+
+function toUTC(date: Date): Date {
+  return new Date(date.toUTCString());
+}
+
+function getDateBounds(date: Date): { start: number; end: number } {
+  date = toUTC(date);
+  date.setUTCHours(0, 0, 0, 0);
+  const startMillis = date.getTime();
+  const start = Math.floor(startMillis / 1000);
+
+  date.setUTCDate(date.getUTCDate() + 1);
+  const endMillis = date.getTime();
+  const end = Math.floor(endMillis / 1000);
+
+  return { start, end };
+}
+
+function formatScore(score: Score): [number, number, number] {
+  return [score.personal, score.professional, score.spiritual];
+}
+
+async function fetchData(date: Date): Promise<DataFile> {
+  const { start, end } = getDateBounds(date);
+  
+  const { docs } = await historicCollection
+    .orderBy("timestamp", "asc")
+    .startAt(start)
+    .endBefore(end)
+    .get();
+
+  return docs
+    .map(doc => doc.data() as Score)
+    .reduce((acc, elem) => ({
+      ...acc,
+      [elem.timestamp]: formatScore(elem)
+    }), {} as DataFile)
+}
+
+async function saveData(date: Date, data: DataFile) {
+  date = toUTC(date);
+  const path = `data/${date.getUTCFullYear()}-${date.getUTCMonth() + 1}.json`;
+
+  const existingData: DataFile = await fsPromise
+    .readFile(path, "utf-8")
+    .catch(() => "{}")
+    .then(data => JSON.parse(data))
+
+  const newData = {
+    ...existingData,
+    ...data
+  };
+
+  await fsPromise.mkdir("data", {recursive: true})
+  await fsPromise.writeFile(path, JSON.stringify(newData), { encoding: "utf-8" });
+  
+}
+
+async function fetchAndSave(date: Date) {
+  const data = await fetchData(date);
+  await saveData(date, data);
+}
+
+async function saveAll() {
+  const start = new Date("2022-06-29T00:00:00Z");
+  const end = new Date();
+
+  while (start < end) {
+    console.log(start);
+    await fetchAndSave(start);
+    start.setDate(start.getDate() + 1);
   }
+}
 
-  timer = setTimeout(() => {
-    timer = null;
-    if (
-      personal !== newPersonal ||
-      professional !== newProfessional ||
-      spiritual !== newSpiritual
-    ) {
-      personal = newPersonal;
-      professional = newProfessional;
-      spiritual = newSpiritual;
-      pushUpdate();
-    }
-  }, 1_000);
-});
+async function saveToday() {
+  await fetchAndSave(new Date());
+}
+
+saveToday();
