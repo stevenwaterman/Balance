@@ -3,7 +3,7 @@
   import { dataSet } from "$lib/dataSet";
 
   const dataViewPromise = dataSet.getView(
-    new Date("2022-07-1"),
+    new Date("2022-07-7 14:00:00"),
     new Date()
   );
 </script>

@@ -39,6 +39,15 @@
 </style>
 
 <svg viewBox={`0 0 ${width} ${height}`}>
+  <circle cx="20" cy="10" r="5" fill="var(--red)"/>
+  <text x="30" y="13" fill="var(--red)" font-size="10">Personal</text>
+
+  <circle cx="125" cy="10" r="5" fill="var(--green)"/>
+  <text x="135" y="13" fill="var(--green)" font-size="10">Professional</text>
+
+  <circle cx="240" cy="10" r="5" fill="var(--blue)"/>
+  <text x="250" y="13" fill="var(--blue)" font-size="10">Spiritual</text>
+
   <g transform={`translate(${margin.left}, ${margin.top})`}>
     <Axes
       {data}
@@ -47,7 +56,7 @@
       let:xScale
       let:yScale
     >
-      <DataLine series={personal} color="var(--orange)" {xScale} {yScale} />
+      <DataLine series={personal} color="var(--red)" {xScale} {yScale} />
       <DataLine series={professional} color="var(--green)" {xScale} {yScale} />
       <DataLine series={spiritual} color="var(--blue)" {xScale} {yScale} />
     </Axes>
