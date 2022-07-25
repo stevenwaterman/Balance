@@ -2,7 +2,7 @@ import type { Score } from "./dataSet";
 
 export type SingleScore = { date: number; value: number };
 
-export function extractSingleScore(
+function extractSingleScore(
   data: Score[],
   scoreType: "personal" | "professional" | "spiritual"
 ): SingleScore[] {
@@ -12,7 +12,7 @@ export function extractSingleScore(
   }));
 }
 
-export function removeGradualChange(data: SingleScore[]): SingleScore[] {
+function removeGradualChange(data: SingleScore[]): SingleScore[] {
   const output: SingleScore[] = [];
   data.forEach(elem => {
     if (output.length > 0) {
@@ -24,9 +24,9 @@ export function removeGradualChange(data: SingleScore[]): SingleScore[] {
   return output;
 }
 
-export function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
+function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
   if (windowHrs === 0) return data;
-  
+
   const windowMillis = windowHrs * 3600 * 1000
   const inflectionPoints: number[] = data.flatMap(elem => [elem.date, elem.date + windowMillis]);
   const xValues = [...new Set(inflectionPoints)]
@@ -38,20 +38,23 @@ export function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[]
   const window: SingleScore[] = [];
   const output: SingleScore[] = [];
 
-  xValues.forEach(date => {
-    const xMin = date - windowMillis;
-    while (window.length >= 2 && window[1].date <= xMin) window.shift();
+  const lastX = data[data.length - 1].date;
+  xValues
+    .filter(x => x <= lastX)
+    .forEach(date => {
+      const xMin = date - windowMillis;
+      while (window.length >= 2 && window[1].date <= xMin) window.shift();
 
-    const windowAdd = dataLookup[date];
-    if (windowAdd !== undefined) window.push(windowAdd);
+      const windowAdd = dataLookup[date];
+      if (windowAdd !== undefined) window.push(windowAdd);
 
-    if (window.length === 0) return;
+      if (window.length === 0) return;
 
-    const value = windowAvg(window, date, xMin);
-    if (value !== undefined) {
-      output.push({ date, value });
-    }
-  });
+      const value = windowAvg(window, date, xMin);
+      if (value !== undefined) {
+        output.push({ date, value });
+      }
+    });
   
   return output;
 }
@@ -72,4 +75,12 @@ function windowAvg(data: SingleScore[], now: number, xMin: number): number | und
   if (width === 0) return undefined;
 
   return area / width;
+}
+
+export function getDataSeries(
+  data: Score[],
+  scoreType: "personal" | "professional" | "spiritual",
+  windowHrs: number
+): SingleScore[] {
+  return movingAvg(extractSingleScore(data, scoreType), windowHrs)
 }
