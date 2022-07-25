@@ -16,7 +16,8 @@
 
 <style>
   polyline {
-    stroke-width: 1;
+    stroke-width: 2;
+    stroke-opacity: 0.8;
   }
 </style>
 
