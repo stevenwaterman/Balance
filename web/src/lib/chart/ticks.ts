@@ -17,7 +17,6 @@ export function getTicks(
     ticks.push(i);
   }
 
-  const range = max - min;
   return ticks.map(tick => ({
     position: tick,
     label: labelFunction(tick)
@@ -33,13 +32,15 @@ export function getInterval(
   return Math.round(range / tickCount);
 }
 
+const days: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const months: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export function labelTickDate(tick: number): string {
   const date = new Date(tick);
+  const dayOfWeek = date.getUTCDay();
   const day = date.getUTCDate();
   const month = date.getUTCMonth();
-  return `${day} ${months[month]}`;
+  return `${days[dayOfWeek]} ${day}`;
 }
 
 export function defaultTickIntervalX([min, max]: [number, number] | [undefined, undefined]): number {
