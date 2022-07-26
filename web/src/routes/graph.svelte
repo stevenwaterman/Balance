@@ -1,17 +1,12 @@
 <script lang="ts">
-  import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
-  import { dataSet } from "$lib/dataSet";
-
-  const dataViewPromise = dataSet.getView(
-    new Date("2022-07-7 14:00:00"),
-    new Date()
-  );
+  import Controls from "$lib/chart/controls/Controls.svelte";
+import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
 </script>
 
 <style>
   .container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 
@@ -22,10 +17,7 @@
   }
 </style>
 
-{#await dataViewPromise}
-  Fetching...  
-{:then data}
-  <div class="container">
-    <ScatterPlot {data}/>
-  </div>
-{/await}
+<div class="container">
+  <ScatterPlot />
+  <Controls />
+</div>

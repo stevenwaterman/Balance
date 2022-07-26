@@ -1,4 +1,5 @@
 import type { Score } from "./dataSet";
+import * as d3 from "d3";
 
 export type SingleScore = { date: number; value: number };
 
@@ -12,20 +13,9 @@ function extractSingleScore(
   }));
 }
 
-function removeGradualChange(data: SingleScore[]): SingleScore[] {
-  const output: SingleScore[] = [];
-  data.forEach(elem => {
-    if (output.length > 0) {
-      const last = output[output.length - 1];
-      output.push({ date: last.date - 1, value: last.value });
-    }
-    output.push(elem);
-  });
-  return output;
-}
-
 function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
   if (windowHrs === 0) return data;
+  if (data.length === 0) return [];
 
   const windowMillis = windowHrs * 3600 * 1000
   const inflectionPoints: number[] = data.flatMap(elem => [elem.date, elem.date + windowMillis]);
@@ -52,7 +42,7 @@ function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
 
       const value = windowAvg(window, date, xMin);
       if (value !== undefined) {
-        output.push({ date, value });
+        output.push({ date: date - (windowMillis / 2), value });
       }
     });
   
@@ -77,10 +67,52 @@ function windowAvg(data: SingleScore[], now: number, xMin: number): number | und
   return area / width;
 }
 
+function clampData(data: SingleScore[], desiredRange: { start: Date, end: Date }) {
+  const startMillis = desiredRange.start.getTime();
+  const endMillis = desiredRange.end.getTime();
+
+  const bisector = d3.bisector<SingleScore, number>((a,b) => a.date - b);
+  const leftIdx = bisector.left(data, startMillis);
+  const rightIdx = bisector.right(data, endMillis);
+
+  const beforeStart = data[leftIdx - 1];
+  const afterStart = data[leftIdx];
+
+  const beforeEnd = data[rightIdx - 1];
+  const afterEnd = data[rightIdx];
+
+  const clampedData = data.slice(leftIdx, rightIdx);
+
+  const newStart = interpolate(beforeStart, afterStart, startMillis);
+  if (newStart !== undefined) clampedData.unshift(newStart);
+
+  const newEnd = interpolate(beforeEnd, afterEnd, endMillis);
+  if (newEnd !== undefined) clampedData.push(newEnd);
+
+  return clampedData;
+}
+
+function interpolate(before: SingleScore, after: SingleScore, targetDate: number): SingleScore | undefined {
+  if (before === undefined || after === undefined) return undefined;
+  
+  const xDelta = after.date - before.date;
+  const targetFraction = (targetDate - before.date) / xDelta;
+
+  const targetValue = (before.value * (1 - targetFraction)) + (after.value * targetFraction);
+  return {
+    date: targetDate,
+    value: targetValue
+  }
+}
+
 export function getDataSeries(
   data: Score[],
   scoreType: "personal" | "professional" | "spiritual",
-  windowHrs: number
+  windowHrs: number,
+  desiredRange: { start: Date, end: Date }
 ): SingleScore[] {
-  return movingAvg(extractSingleScore(data, scoreType), windowHrs)
+  const singleScore = extractSingleScore(data, scoreType);
+  const blurred = movingAvg(singleScore, windowHrs);
+  const clamped = clampData(blurred, desiredRange);
+  return clamped;
 }

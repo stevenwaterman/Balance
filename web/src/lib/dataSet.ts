@@ -76,7 +76,7 @@ class DataSet {
   }
 }
 
-type DataView = Score[] & {
+export type DataView = Score[] & {
   id: string;
   dataDownloaded: () => void;
   destroy: () => void;

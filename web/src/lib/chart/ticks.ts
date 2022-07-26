@@ -49,6 +49,6 @@ export function defaultTickIntervalX([min, max]: [number, number] | [undefined, 
   if (min === undefined || max === undefined) return millisPerDay;
   const range = max - min;
   const rangeDays = range / millisPerDay;
-  const daysPerTick = Math.ceil(rangeDays / 15);
+  const daysPerTick = Math.ceil(rangeDays / 12);
   return daysPerTick * millisPerDay;
 }
