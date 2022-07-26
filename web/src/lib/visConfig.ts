@@ -16,7 +16,7 @@ export const enablePersonalStore: BoolWritable = togglableBoolStore(true);
 export const enableProfessionalStore: BoolWritable = togglableBoolStore(true);
 export const enableSpiritualStore: BoolWritable = togglableBoolStore(true);
 
-export const windowHrsStore: Writable<number> = writable(24);
+export const windowFractionStore: Writable<number> = writable(0.1);
 
 export const minRangeSeparationDays: number = 1;
 export const rangeMin = new Date("2022-06-29T00:00:00Z");
@@ -74,14 +74,19 @@ export const xExtentStore: Readable<[number, number]> =
   derived(desiredRangeStore, desiredRange => 
     [desiredRange.start.getTime(), desiredRange.end.getTime()] as [number, number]);
 
+export const windowMillisStore: Readable<number> = derived(
+  [desiredRangeStore, windowFractionStore],
+  ([desiredRange, windowFraction]) => {
+    const rangeSize = desiredRange.end.getTime() - desiredRange.start.getTime();
+    return rangeSize * windowFraction;
+  })
+
 const actualRangeStore: Readable<{start: Date, end: Date}> = derived(
-  desiredRangeStore, desiredRange => {
-    const margin = 50 * 3600 * 1000;
-    return { 
-      start: new Date(desiredRange.start.getTime() - margin),
-      end: new Date(desiredRange.end.getTime() + margin)
-    }
-});
+  [desiredRangeStore, windowMillisStore], ([desiredRange, windowMillis]) => ({ 
+    start: new Date(desiredRange.start.getTime() - windowMillis - (24 * 3600 * 1000)),
+    end: new Date(desiredRange.end.getTime() + windowMillis + (24 * 3600 * 1000))
+  })
+);
 
 let currentDataView: Promise<DataView> | undefined = undefined;
 export const dataViewStore: Readable<Promise<DataView>> = derived(actualRangeStore, ({start, end}) => {

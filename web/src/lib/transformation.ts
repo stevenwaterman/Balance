@@ -13,11 +13,10 @@ function extractSingleScore(
   }));
 }
 
-function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
-  if (windowHrs === 0) return data;
+function movingAvg(data: SingleScore[], windowMillis: number): SingleScore[] {
+  if (windowMillis <= 0) return data;
   if (data.length === 0) return [];
 
-  const windowMillis = windowHrs * 3600 * 1000
   const inflectionPoints: number[] = data.flatMap(elem => [elem.date, elem.date + windowMillis]);
   const xValues = [...new Set(inflectionPoints)]
   xValues.sort((a,b) => a-b);
@@ -28,9 +27,7 @@ function movingAvg(data: SingleScore[], windowHrs: number): SingleScore[] {
   const window: SingleScore[] = [];
   const output: SingleScore[] = [];
 
-  const lastX = data[data.length - 1].date;
   xValues
-    .filter(x => x <= lastX)
     .forEach(date => {
       const xMin = date - windowMillis;
       while (window.length >= 2 && window[1].date <= xMin) window.shift();
@@ -94,7 +91,7 @@ function clampData(data: SingleScore[], desiredRange: { start: Date, end: Date }
 
 function interpolate(before: SingleScore, after: SingleScore, targetDate: number): SingleScore | undefined {
   if (before === undefined || after === undefined) return undefined;
-  
+
   const xDelta = after.date - before.date;
   const targetFraction = (targetDate - before.date) / xDelta;
 
@@ -108,11 +105,11 @@ function interpolate(before: SingleScore, after: SingleScore, targetDate: number
 export function getDataSeries(
   data: Score[],
   scoreType: "personal" | "professional" | "spiritual",
-  windowHrs: number,
+  windowMillis: number,
   desiredRange: { start: Date, end: Date }
 ): SingleScore[] {
   const singleScore = extractSingleScore(data, scoreType);
-  const blurred = movingAvg(singleScore, windowHrs);
+  const blurred = movingAvg(singleScore, windowMillis);
   const clamped = clampData(blurred, desiredRange);
   return clamped;
 }

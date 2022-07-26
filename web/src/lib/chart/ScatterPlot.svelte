@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dataViewStore, windowHrsStore } from "$lib/visConfig";
+  import { dataViewStore } from "$lib/visConfig";
   import Axes from "./axes/Axes.svelte";
   import DataDisplay from "./data/DataDisplay.svelte";
   import { graphDimensionsStore } from "$lib/visConfig";
