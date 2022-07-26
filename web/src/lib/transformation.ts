@@ -69,20 +69,22 @@ function clampData(data: SingleScore[], desiredRange: { start: Date, end: Date }
   const endMillis = desiredRange.end.getTime();
 
   const bisector = d3.bisector<SingleScore, number>((a,b) => a.date - b);
-  const leftIdx = bisector.left(data, startMillis);
-  const rightIdx = bisector.right(data, endMillis);
+
+  // TODO the 0, data.length SHOULD be optional, but for some reason the compiler is removing them?!
+  // Step through it in a debugger - the last 2 args are missing defaults on bisector.right
+  // It works if you do console.log({bisector}) though - it's just completely fucked
+  // We might investigate this properly later
+  const leftIdx = bisector.left(data, startMillis, 0, data.length);
+  const rightIdx = bisector.right(data, endMillis, 0, data.length);
+  const clampedData = data.slice(leftIdx, rightIdx);
 
   const beforeStart = data[leftIdx - 1];
   const afterStart = data[leftIdx];
-
-  const beforeEnd = data[rightIdx - 1];
-  const afterEnd = data[rightIdx];
-
-  const clampedData = data.slice(leftIdx, rightIdx);
-
   const newStart = interpolate(beforeStart, afterStart, startMillis);
   if (newStart !== undefined) clampedData.unshift(newStart);
 
+  const beforeEnd = data[rightIdx - 1];
+  const afterEnd = data[rightIdx];
   const newEnd = interpolate(beforeEnd, afterEnd, endMillis);
   if (newEnd !== undefined) clampedData.push(newEnd);
 

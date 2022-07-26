@@ -16,7 +16,7 @@ export const enablePersonalStore: BoolWritable = togglableBoolStore(true);
 export const enableProfessionalStore: BoolWritable = togglableBoolStore(true);
 export const enableSpiritualStore: BoolWritable = togglableBoolStore(true);
 
-export const windowFractionStore: Writable<number> = writable(0.1);
+export const windowFractionStore: Writable<number> = writable(0.4);
 
 export const minRangeSeparationDays: number = 1;
 export const rangeMin = new Date("2022-06-29T00:00:00Z");
@@ -48,7 +48,6 @@ function clampDesiredRange(value: { start: Date, end: Date }): { start: Date, en
   const requiredTimeDifference = minRangeSeparationDays * 24 * 3600 * 1000;
   const timeDifference = end.getTime() - start.getTime();
   if (timeDifference >= requiredTimeDifference) return { start, end };
-  debugger
 
   const midPoint = start.getTime() + timeDifference / 2;
   const adjustedStart = midPoint - requiredTimeDifference / 2;
