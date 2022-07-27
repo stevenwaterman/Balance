@@ -51,12 +51,19 @@
     color: var(--color);
   }
 
+  /* Use light version of color on hover */
+  .container:hover input:not(:checked) ~ .label {
+    color: var(--lightwhite);
+  }
+  .container:hover input:not(:checked) ~ .customToggle {
+    background-color: var(--lightwhite);
+  }
 
   /* Use light version of color on hover */
-  .container:hover input ~ .label {
+  .container:hover input:checked ~ .label {
     color: var(--lightcolor);
   }
-  .container:hover input ~ .customToggle {
+  .container:hover input:checked ~ .customToggle {
     background-color: var(--lightcolor);
   }
 </style>
