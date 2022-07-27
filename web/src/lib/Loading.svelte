@@ -1,7 +1,11 @@
 <script lang="ts">
   import { blur } from "svelte/transition";
 
-  const wait = () => new Promise((res) => setTimeout(res , 100));
+  function wait(delay: number): Promise<void> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), delay);
+    })
+  }
 </script>
 
 <style>
@@ -11,13 +15,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: var(--white);
-    font-size: 2em;
+    font-size: 3vw;
     text-align: center;
   }
 </style>
 
-<!-- svelte-ignore empty-block -->
-{#await wait}
+{#await wait(200)}
+  <span></span>
 {:then}
-  <span in:blur class="loading">Downloading Data</span>
+  <span class="loading" transition:blur>Downloading Data...</span>
 {/await}
