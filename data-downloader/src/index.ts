@@ -84,6 +84,7 @@ async function saveData(date: Date, data: DataFile) {
 
 async function fetchAndSave(date: Date) {
   const data = await fetchData(date);
+  console.log(JSON.stringify(data))
   await saveData(date, data);
 }
 
@@ -94,7 +95,7 @@ async function saveAll() {
   while (start < end) {
     console.log(start);
     await fetchAndSave(start);
-    start.setDate(start.getDate() + 1);
+    start.setUTCDate(start.getUTCDate() + 1);
   }
 }
 
