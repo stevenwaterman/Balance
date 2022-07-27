@@ -22,5 +22,5 @@
 
 <div class="container">
   <span>Smoothing: {($windowFractionStore * 100).toFixed(0)}%</span>
-  <input type="range" min="0.01" max="0.40" step="0.01" bind:value={$windowFractionStore}/>
+  <input type="range" min="0" max="0.40" step="0.01" bind:value={$windowFractionStore}/>
 </div>

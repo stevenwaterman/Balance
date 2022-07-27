@@ -14,8 +14,10 @@ function extractSingleScore(
 }
 
 function movingAvg(data: SingleScore[], windowMillis: number): SingleScore[] {
-  if (windowMillis <= 0) return data;
+  // if (windowMillis <= 0) return data;
   if (data.length === 0) return [];
+
+  windowMillis = Math.max(1, windowMillis);
 
   const inflectionPoints: number[] = data.flatMap(elem => [elem.date, elem.date + windowMillis]);
   const xValues = [...new Set(inflectionPoints)]
