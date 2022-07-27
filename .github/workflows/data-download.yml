@@ -32,7 +32,7 @@ jobs:
     - run: |
         git checkout historical-data
         git add -f data/
-        git commit --allow-empty -m "Nightly data download"
+        git commit -m "Nightly data download"
 
     - uses: ad-m/github-push-action@master
       with:
