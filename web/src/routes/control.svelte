@@ -4,29 +4,34 @@
   import {
     browserLocalPersistence,
     getAuth,
+    getRedirectResult,
     GoogleAuthProvider,
     setPersistence,
-    signInWithPopup,
+    signInWithRedirect,
+    type Auth,
     type User,
   } from "firebase/auth";
+import type { Firestore } from "firebase/firestore";
 
-  const db = initFirebase();
+  let db: Firestore;
+  $: db = initFirebase();
 
   async function loginWithGoogle(): Promise<User | undefined> {
-    const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    return setPersistence(auth, browserLocalPersistence).then(() => {
-      if (auth.currentUser === null) {
-        return signInWithPopup(auth, provider).then((cred) => cred.user);
-      } else {
-        return auth.currentUser;
-      }
-    });
+    return setPersistence(auth, browserLocalPersistence)
+      .then(async () => {
+        if (auth.currentUser !== null) return auth.currentUser;
+
+        const redirectResult = await getRedirectResult(auth);
+        if (redirectResult !== null) return redirectResult.user;
+
+        await signInWithRedirect(auth, new GoogleAuthProvider());
+      });
   }
 </script>
 
 {#await loginWithGoogle()}
-  <p>Please Log in via the popup</p>
+  <p>Redirecting you to log in...</p>
 {:then user}
   {#if user?.uid === "sDV4cfFys0R5bapdvpeCTQSL9t32"}
     <AdminPanel {db} />

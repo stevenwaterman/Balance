@@ -1,5 +1,6 @@
 <script lang="ts">
   import { addDoc, collection, CollectionReference, doc, DocumentReference, onSnapshot, setDoc, type Firestore } from "firebase/firestore";
+import Slider from "./Slider.svelte";
 
   export let db: Firestore;
 
@@ -71,13 +72,13 @@
 
 <div class="container">
   {#if localScore !== undefined}
-    <span>Personal: {localStorage.personal}</span>
-    <input type="number" min={0} max={9} bind:value={localScore.personal} step={1} />
+    <span>Personal</span>
+    <Slider bind:value={localScore.personal} />
 
-    <span>Personal: {localStorage.personal}</span>
-    <input type="number" min={0} max={9} bind:value={localScore.professional} step={1} />
+    <span>Professional</span>
+    <Slider bind:value={localScore.professional} />
 
-    <span>Personal: {localStorage.personal}</span>
-    <input type="number" min={0} max={9} bind:value={localScore.spiritual} step={1} />
+    <span>Spiritual</span>
+    <Slider bind:value={localScore.spiritual} />
   {/if}
 </div>
