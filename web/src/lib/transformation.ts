@@ -14,7 +14,6 @@ function extractSingleScore(
 }
 
 function movingAvg(data: SingleScore[], windowMillis: number): SingleScore[] {
-  // if (windowMillis <= 0) return data;
   if (data.length === 0) return [];
 
   windowMillis = Math.max(1, windowMillis);

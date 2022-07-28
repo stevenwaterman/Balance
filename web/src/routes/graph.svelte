@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Controls from "$lib/chart/controls/Controls.svelte";
-import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
+  import GraphControls from "$lib/chart/controls/GraphControls.svelte";
+  import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
 </script>
 
 <style>
@@ -19,5 +19,5 @@ import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
 
 <div class="container">
   <ScatterPlot />
-  <Controls />
+  <GraphControls />
 </div>

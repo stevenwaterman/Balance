@@ -4,7 +4,7 @@ export type Score = {
   personal: Digit;
   professional: Digit;
   spiritual: Digit;
-}
+};
 
 class DataSet {
   private readonly views: Record<string, DataView> = {};

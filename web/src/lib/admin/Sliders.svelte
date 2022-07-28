@@ -65,20 +65,28 @@ import Slider from "./Slider.svelte";
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: 1fr 1fr 1fr;
+    justify-items: right;
+    align-items: center;
     row-gap: 1em;
-    column-gap: 0.5em;
+    column-gap: 1em;
+    width: fit-content;
+  }
+
+  span {
+    grid-column: span 2;
+    justify-self: center;
+    text-align: center;
+    font-weight: bold;
+    color: var(--lightwhite);
   }
 </style>
 
 <div class="container">
+  <span>Sliders</span>
+
   {#if localScore !== undefined}
-    <span>Personal</span>
-    <Slider bind:value={localScore.personal} />
-
-    <span>Professional</span>
-    <Slider bind:value={localScore.professional} />
-
-    <span>Spiritual</span>
-    <Slider bind:value={localScore.spiritual} />
+    <Slider label="Personal" bind:value={localScore.personal} />
+    <Slider label="Professional" bind:value={localScore.professional} />
+    <Slider label="Spiritual" bind:value={localScore.spiritual} />
   {/if}
 </div>
