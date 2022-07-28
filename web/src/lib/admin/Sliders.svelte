@@ -59,8 +59,25 @@
   $: if(localScore !== undefined) setTimer(localScore);
 </script>
 
-{#if localScore !== undefined}
-  <input type="range" min={0} max={9} bind:value={localScore.personal} step={1} />
-  <input type="range" min={0} max={9} bind:value={localScore.professional} step={1} />
-  <input type="range" min={0} max={9} bind:value={localScore.spiritual} step={1} />
-{/if}
+<style>
+  .container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 1em;
+    column-gap: 0.5em;
+  }
+</style>
+
+<div class="container">
+  {#if localScore !== undefined}
+    <span>Personal: {localStorage.personal}</span>
+    <input type="number" min={0} max={9} bind:value={localScore.personal} step={1} />
+
+    <span>Personal: {localStorage.personal}</span>
+    <input type="number" min={0} max={9} bind:value={localScore.professional} step={1} />
+
+    <span>Personal: {localStorage.personal}</span>
+    <input type="number" min={0} max={9} bind:value={localScore.spiritual} step={1} />
+  {/if}
+</div>
