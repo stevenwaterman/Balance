@@ -1,20 +1,9 @@
 <script lang="ts">
-  import { initializeApp } from "firebase/app";
+  import { initFirebase } from "$lib/initFirebase";
   import { doc, getFirestore, onSnapshot } from "firebase/firestore";
   import { blur } from "svelte/transition";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDgmBSpuzMuyZ2z_Dd5KSwwPRRHNvDw5so",
-    authDomain: "balance-scores.firebaseapp.com",
-    projectId: "balance-scores",
-    storageBucket: "balance-scores.appspot.com",
-    messagingSenderId: "900673448207",
-    appId: "1:900673448207:web:dd5f173851b0edcb7a767a"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const db = initFirebase();
   const currentDoc = doc(db, "current", "current");
   onSnapshot(currentDoc, doc => {
     const data = doc.data();
