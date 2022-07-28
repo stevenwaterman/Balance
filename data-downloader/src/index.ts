@@ -103,4 +103,6 @@ async function saveToday() {
   await fetchAndSave(new Date());
 }
 
+// TODO this should download all since the last event, rather than just the last day. Don't assume previous runs were a success
+// TODO this should download labels too
 saveToday();

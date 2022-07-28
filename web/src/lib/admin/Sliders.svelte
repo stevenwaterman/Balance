@@ -12,7 +12,6 @@
   $: onSnapshot(currentDoc, doc => {
     const data = doc.data();
     if (data !== undefined) {
-      console.log("Reading", data)
       remoteScore = {...data} as any;
       localScore = {...data} as any;
     }
@@ -42,7 +41,6 @@
   function setTimer(score: DbScore) {
     if (timer !== undefined) clearTimeout(timer);
     if (!requiresUpdate(score, remoteScore)) return;
-    console.log("Starting timer", score);
 
     const scoreCapture = {
       ...score,
@@ -51,9 +49,7 @@
 
     timer = setTimeout(() => {
       timer = undefined;
-      console.log("Considering writing ", scoreCapture);
       if (requiresUpdate(scoreCapture, remoteScore)) {
-        console.log("Writing");
         setDoc(currentDoc, score)
         addDoc(historicCollection, score)
       }
