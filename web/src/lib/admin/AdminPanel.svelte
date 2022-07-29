@@ -19,7 +19,7 @@
     justify-items: center;
     align-items: center;
 
-    font-size: min(2vw, 4vh);
+    font-size: min(5vw, 4vh);
   }
 </style>
 

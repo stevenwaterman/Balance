@@ -1,6 +1,7 @@
 <script lang="ts">
   import { addDoc, collection, CollectionReference, doc, DocumentReference, onSnapshot, setDoc, type Firestore } from "firebase/firestore";
-import Slider from "./Slider.svelte";
+  import { onMount } from "svelte";
+  import Slider from "./Slider.svelte";
 
   export let db: Firestore;
 
@@ -10,12 +11,14 @@ import Slider from "./Slider.svelte";
   let historicCollection: CollectionReference;
   $: historicCollection = collection(db, "historic");
 
-  $: onSnapshot(currentDoc, doc => {
-    const data = doc.data();
-    if (data !== undefined) {
-      remoteScore = {...data} as any;
-      localScore = {...data} as any;
-    }
+  onMount(() => {
+    onSnapshot(currentDoc, doc => {
+      const data = doc.data();
+      if (data !== undefined) {
+        remoteScore = {...data} as any;
+        localScore = {...data} as any;
+      }
+    });
   });
 
   type DbScore = {
