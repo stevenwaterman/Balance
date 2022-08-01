@@ -52,7 +52,7 @@ class DataSet {
 
   private async downloadMonth(name: string): Promise<void> {
     const response: Record<number, [number, number, number]> =
-      await fetch(`https://raw.githubusercontent.com/stevenwaterman/Balance/historical-data/data/${name}.json`)
+      await fetch(`https://raw.githubusercontent.com/stevenwaterman/Balance/historical-data/${name}.json`)
         .then(res => res.json())
         .catch(() => ({}));
 
