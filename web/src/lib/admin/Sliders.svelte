@@ -48,14 +48,14 @@
 
     const scoreCapture = {
       ...score,
-      timestamp: new Date().getTime()
+      timestamp: Math.floor(new Date().getTime() / 1000)
     };
 
     timer = setTimeout(() => {
       timer = undefined;
       if (requiresUpdate(scoreCapture, remoteScore)) {
-        setDoc(currentDoc, score)
-        addDoc(historicCollection, score)
+        setDoc(currentDoc, scoreCapture)
+        addDoc(historicCollection, scoreCapture)
       }
     }, 5000);
   }
