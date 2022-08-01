@@ -33,7 +33,7 @@ jobs:
         FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
 
     - run: |
-        cp -R $GITHUB_WORKSPACE/code/data/ $GITHUB_WORKSPACE/historic/
+        cp -R $GITHUB_WORKSPACE/code/data/* $GITHUB_WORKSPACE/historic/
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
