@@ -12,6 +12,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: "code"
+
+    - uses:
+      with:
+        ref: "historical-data"
+        path: "historic"
+
     - uses: actions/setup-node@v1
       with:
         node-version: '14.x'
@@ -19,23 +27,23 @@ jobs:
     - run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git fetch
-        git checkout origin/historical-data -- data/
 
     - run: |
+        cp -R $GITHUB_WORKSPACE/historic/ $GITHUB_WORKSPACE/code/data/
         npm ci
         npm run dev
-      working-directory: data-downloader
+      working-directory: code/data-downloader
       env:
         FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
       
     - run: |
-        git checkout historical-data
-        git add -f data/
+        cp -R $GITHUB_WORKSPACE/code/data/ $GITHUB_WORKSPACE/historic/
+        git add .
         git commit -m "Nightly data download"
+      working-directory: historic
 
     - uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
         branch: historical-data
+        directory: historic
