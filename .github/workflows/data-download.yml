@@ -25,19 +25,17 @@ jobs:
         node-version: '14.x'
 
     - run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - run: |
         cp -R $GITHUB_WORKSPACE/historic/ $GITHUB_WORKSPACE/code/data/
         npm ci
         npm run dev
       working-directory: code/data-downloader
       env:
         FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
-      
+
     - run: |
         cp -R $GITHUB_WORKSPACE/code/data/ $GITHUB_WORKSPACE/historic/
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git add .
         git commit -m "Nightly data download"
       working-directory: historic
