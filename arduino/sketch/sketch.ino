@@ -56,38 +56,58 @@ void setup() {
     display(-1, spiritualLatch, spiritualClock, spiritualData);
 }
 
-int personalValue = 0;
-int professionalValue = 0;
-int spiritualValue = 0;
+int personalDisplay = 0;
+int personalSlider = 0;
+
+int professionalDisplay = 0;
+int professionalSlider = 0;
+
+int spiritualDisplay = 0;
+int spiritualSlider = 0;
 
 void loop() {
   bool changed = false;
   
-  int newPersonal = read(personalPot);
-  if (newPersonal != -1 && personalValue != newPersonal) {
+  int newPersonalSlider = read(personalPot);
+  if (newPersonalSlider != -1 && personalSlider != newPersonalSlider) {
     changed = true;
-    personalValue = newPersonal;
-    display(personalValue, personalLatch, personalClock, personalData);
+    personalDisplay = newPersonalSlider;
+    personalSlider = newPersonalSlider;
+    display(personalDisplay, personalLatch, personalClock, personalData);
   }
 
-  int newProfessional = read(professionalPot);
-  if (newProfessional != -1 && professionalValue != newProfessional) {
+  int newProfessionalSlider = read(professionalPot);
+  if (newProfessionalSlider != -1 && professionalSlider != newProfessionalSlider) {
     changed = true;
-    professionalValue = newProfessional;
-    display(newProfessional, professionalLatch, professionalClock, professionalData);
+    professionalDisplay = newProfessionalSlider;
+    professionalSlider = newProfessionalSlider;
+    display(professionalDisplay, professionalLatch, professionalClock, professionalData);
   }
 
-  int newSpiritual = read(spiritualPot);
-  if (newSpiritual != -1 && spiritualValue != newSpiritual) {
+  int newSpiritualSlider = read(spiritualPot);
+  if (newSpiritualSlider != -1 && spiritualSlider != newSpiritualSlider) {
     changed = true;
-    spiritualValue = newSpiritual;
-    display(newSpiritual, spiritualLatch, spiritualClock, spiritualData);
+    spiritualDisplay = newSpiritualSlider;
+    spiritualSlider = newSpiritualSlider;
+    display(spiritualDisplay, spiritualLatch, spiritualClock, spiritualData);
   }
 
   if (changed) {
     char strBuf[3];
-    sprintf(strBuf, "%d%d%d", personalValue, professionalValue, spiritualValue);
+    sprintf(strBuf, "%d%d%d", personalDisplay, professionalDisplay, spiritualDisplay);
     Serial.println(strBuf);
+  }
+
+  if (Serial.available() > 0) {
+    String dataString = Serial.readStringUntil('\n');
+    
+    personalDisplay = dataString[0] - '0';
+    professionalDisplay = dataString[1] - '0';
+    spiritualDisplay = dataString[2] - '0';
+
+    display(personalDisplay, personalLatch, personalClock, personalData);
+    display(professionalDisplay, professionalLatch, professionalClock, professionalData);
+    display(spiritualDisplay, spiritualLatch, spiritualClock, spiritualData);
   }
 
   delay(16);

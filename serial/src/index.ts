@@ -3,6 +3,13 @@ import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore"
 import fs from "fs";
 
+type Score = {
+  timestamp: number;
+  personal: number;
+  professional: number;
+  spiritual: number;
+}
+
 const port = new SerialPort({
   path: "/dev/ttyACM0",
   baudRate: 9600
@@ -20,9 +27,9 @@ const db = getFirestore(app);
 const currentDoc = db.doc("current/current");
 const historicCollection = db.collection("/historic");
 
-async function pushUpdate() {
+async function toFirestore() {
   const timestamp = Math.round(new Date().getTime() / 1000);
-  const data = { personal, professional, spiritual, timestamp };
+  const data: Score = { personal, professional, spiritual, timestamp };
   
   await Promise.all([
     currentDoc.update(data),
@@ -51,7 +58,21 @@ lineStream.on("data", (data: string) => {
       personal = newPersonal;
       professional = newProfessional;
       spiritual = newSpiritual;
-      pushUpdate();
+      toFirestore();
     }
   }, 1_000);
+});
+
+function toBalanceBox() {
+  const data = `${personal}${professional}${spiritual}`;
+  console.log(`From Remote: ${data}`);
+  port.write(`${data}\n`, "ascii");
+}
+
+currentDoc.onSnapshot(snapshot => {
+  const data = snapshot.data() as Score;
+  personal = data.personal;
+  professional = data.professional;
+  spiritual = data.spiritual;
+  toBalanceBox();
 });
