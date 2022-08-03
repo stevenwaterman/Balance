@@ -32,7 +32,6 @@
     grid-column: span 2;
     text-align: center;
     font-weight: bold;
-    color: var(--lightwhite);
   }
 
   input {

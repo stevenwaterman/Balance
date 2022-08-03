@@ -13,6 +13,8 @@
 
   let minEnd: Date;
   $: minEnd = plusDays($desiredRangeStore.start, minRangeSeparationDays);
+
+  // TODO add buttons to +- days, show all data etc
 </script>
 
 <style>

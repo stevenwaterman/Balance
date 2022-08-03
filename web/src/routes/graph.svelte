@@ -1,6 +1,8 @@
 <script lang="ts">
   import GraphControls from "$lib/chart/controls/GraphControls.svelte";
   import ScatterPlot from "$lib/chart/ScatterPlot.svelte";
+
+  // TODO use grid and change the orientation on mobile so the graph is on top
 </script>
 
 <style>

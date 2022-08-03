@@ -1,7 +1,7 @@
 <script lang="ts">
   import DateRange from "./date/DateRange.svelte";
   import Legend from "./legend/Legend.svelte";
-import WindowSize from "./WindowSize.svelte";
+  import WindowSize from "./WindowSize.svelte";
 </script>
 
 <style>

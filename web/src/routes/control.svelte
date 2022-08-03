@@ -16,12 +16,15 @@
     justify-items: center;
     align-items: center;
     background-color: var(--black);
+
+    font-size: min(5vw, 4vh);
+    color: var(--lightwhite);
   }
 </style>
 
 <div class="container">
   {#await loginWithGoogle()}
-    <p>Redirecting you to log in...</p>
+    <p>Logging in...</p>
   {:then user}
     {#if user?.uid === "sDV4cfFys0R5bapdvpeCTQSL9t32"}
       <AdminPanel {db} />

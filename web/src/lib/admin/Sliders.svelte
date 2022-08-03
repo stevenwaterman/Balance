@@ -29,7 +29,12 @@
   }
 
   let remoteScore: DbScore | undefined;
-  let localScore: DbScore | undefined;
+  let localScore: DbScore = {
+    timestamp: 0,
+    personal: 0,
+    professional: 0,
+    spiritual: 0
+  };
 
   function requiresUpdate(local: DbScore | undefined, remote: DbScore | undefined): boolean {
     if (local === undefined) return false;
@@ -80,16 +85,13 @@
     justify-self: center;
     text-align: center;
     font-weight: bold;
-    color: var(--lightwhite);
   }
 </style>
 
 <div class="container">
   <span>Sliders</span>
 
-  {#if localScore !== undefined}
-    <Slider label="Personal" bind:value={localScore.personal} />
-    <Slider label="Professional" bind:value={localScore.professional} />
-    <Slider label="Spiritual" bind:value={localScore.spiritual} />
-  {/if}
+  <Slider label="Personal" bind:value={localScore.personal} />
+  <Slider label="Professional" bind:value={localScore.professional} />
+  <Slider label="Spiritual" bind:value={localScore.spiritual} />
 </div>

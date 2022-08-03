@@ -1,6 +1,6 @@
 <script lang="ts">
   export let label: string;
-  export let value: number;
+  export let value: number | undefined;
 
   let values: number[];
   $: values = new Array(10).fill(null).map((_, i) => i);
