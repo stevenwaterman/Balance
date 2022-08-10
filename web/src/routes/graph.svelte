@@ -19,6 +19,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Balance Graph</title>
+</svelte:head>
+
 <div class="container">
   <ScatterPlot />
   <GraphControls />

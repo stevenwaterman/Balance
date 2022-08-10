@@ -22,6 +22,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Balance Control</title>
+</svelte:head>
+
 <div class="container">
   {#await loginWithGoogle()}
     <p>Logging in...</p>

@@ -111,6 +111,10 @@
   }
 </style>
 
+<svelte:head>
+  <title>Balance Scores</title>
+</svelte:head>
+
 <div class="col" style="height: 100%;">
   <p class="title">(Live) How I Feel:</p>
 
