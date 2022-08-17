@@ -38,7 +38,7 @@ These are just the parts I used, alternatives will work
 
 ### Steps
 
-*This is from memory, no guarantees*
+*This is from memory, no guarantees. Skip to the 'Firebase' section if you just want the website part.*
 
 **Electronics:**
 
@@ -63,23 +63,29 @@ These are just the parts I used, alternatives will work
 
 **Firebase:**
 
-1. Create a new project
-1. Under the project settings, download the service account key, and save it as `credentials.json` in the `serial` folder.
-1. Add a web app, and copy the `firebaseConfig` out of the `npm` SDK setup and configuration, into `web/src/routes/index.svelte`.
+1. Create a [Firebase](https://console.firebase.google.com/) account and a new project.
+1. Under the project settings, download the service account key, and save it as `credentials.json` in the root of this repository.
+1. Add a web app, and copy the `firebaseConfig` out of the `npm` SDK setup and configuration, into [web/src/lib/initFirebase.ts](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/lib/initFirebase.ts#L14).
+1. Enable Authentication.
+1. Enable the Google sign-in provider for authentication
+1. Add your domain (eg `stevenwaterman.uk` or `stevenwaterman.github.io` etc) to the `Authorized Domains` under `Settings`.
 1. Enable Firestore.
 1. Create two collections - `current` and `historic`.
-1. Set the Firestore rules, something like:
+1. Set the Firestore rules as:
 
 ```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
   	match /historic/{document=**} {
-      allow read, write: if request.auth != null;
+      allow read, write: if request.auth.uid == "sDV4cfFys0R5bapdvpeCTQSL9t32";
     }
     match /current/current {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if request.auth.uid == "sDV4cfFys0R5bapdvpeCTQSL9t32";
+    }
+    match /labels/{document=**} {
+      allow read,write: if request.auth.uid == "sDV4cfFys0R5bapdvpeCTQSL9t32";
     }
   }
 }
@@ -87,11 +93,21 @@ service cloud.firestore {
 
 **Web:**
 
-This part's mostly automated, once you have updated the `firebaseConfig`.
+Start by forking this repository. It's mostly automated, other than a couple of bits of configuration.
 
-1. If your repo is not called `Balance`, update the base path in `svelte.config.js`.
+1. In GitHub `Setting > Security > Secrets > Actions`, create a new Repository Secret named `FIREBASE_CREDENTIALS`. Copy the contents of the `credentials.json` file into the `Value` text box and save it.
+1. If your repo is not called `Balance`, update the [base path](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/svelte.config.js#L21) in `web/svelte.config.js`.
 1. The web app should automatically build, storing the static site in the `gh-pages` branch. You might have to give it permission to push to your repo.
-1. Enable GitHub pages, selecting the `gh-pages` branch.
-1. Wait for it to build, then go to `<YOUR_GH_USERNAME>.github.io/Balance`
+1. Enable GitHub pages in the GitHub settings, selecting the `gh-pages` branch.
+1. Wait for it to build, then go to `<YOUR_GH_USERNAME>.github.io/Balance` to verify it's all working.
+1. Visit `<YOUR_GH_USERNAME>.github.io/Balance/control` and log in with google.
+1. Visit the Firebase authentication page, and copy the UID for your use account.
+1. Use that UID in the Firestore rules and update it [in web/src/routes/control.svelte](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/routes/control.svelte#L33).
 
-Then it should all be working!
+Wait for it to redeploy, and you should now be able to access the control page!
+
+**Valid urls:**
+
+- `/Balance`: Normal current-data display.
+- `/Balance/graph`: Historic data display. Data updates once per day.
+- `/Balance/control`: Data entry.
