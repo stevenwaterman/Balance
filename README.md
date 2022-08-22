@@ -70,7 +70,7 @@ These are just the parts I used, alternatives will work
 1. Enable the Google sign-in provider for authentication
 1. Add your domain (eg `stevenwaterman.uk` or `stevenwaterman.github.io` etc) to the `Authorized Domains` under `Settings`.
 1. Enable Firestore.
-1. Create two collections - `current` and `historic`.
+1. Create three collections - `current`, `historic`, and `labels`.
 1. Set the Firestore rules as:
 
 ```
