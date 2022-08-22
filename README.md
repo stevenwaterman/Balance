@@ -95,6 +95,7 @@ service cloud.firestore {
 
 Start by forking this repository. It's mostly automated, other than a couple of bits of configuration.
 
+1. Enable workflows under the `Actions` tab
 1. In GitHub `Setting > Security > Secrets > Actions`, create a new Repository Secret named `FIREBASE_CREDENTIALS`. Copy the contents of the `credentials.json` file into the `Value` text box and save it.
 1. If your repo is not called `Balance`, update the [base path](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/svelte.config.js#L21) in `web/svelte.config.js`.
 1. The web app should automatically build, storing the static site in the `gh-pages` branch. You might have to give it permission to push to your repo.
