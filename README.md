@@ -98,12 +98,13 @@ Start by forking this repository. It's mostly automated, other than a couple of 
 1. Enable workflows under the `Actions` tab
 1. In GitHub `Setting > Security > Secrets > Actions`, create a new Repository Secret named `FIREBASE_CREDENTIALS`. Copy the contents of the `credentials.json` file into the `Value` text box and save it.
 1. If your repo is not called `Balance`, update the [base path](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/svelte.config.js#L21) in `web/svelte.config.js`.
-1. The web app should automatically build, storing the static site in the `gh-pages` branch. You might have to give it permission to push to your repo.
-1. Enable GitHub pages in the GitHub settings, selecting the `gh-pages` branch.
-1. Wait for it to build, then go to `<YOUR_GH_USERNAME>.github.io/Balance` to verify it's all working.
-1. Visit `<YOUR_GH_USERNAME>.github.io/Balance/control` and log in with google.
-1. Visit the Firebase authentication page, and copy the UID for your use account.
-1. Use that UID in the Firestore rules and update it [in web/src/routes/control.svelte](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/routes/control.svelte#L33).
+2. Update the fetch url with your GitHub username [in web/src/lib/dataSet.ts](https://github.com/stevenwaterman/Balance/blob/de5710807bf56cdf3094eda35e12951909dd7c2e/web/src/lib/dataSet.ts#L55)
+3. The web app should automatically build, storing the static site in the `gh-pages` branch. You might have to give it permission to push to your repo.
+4. Enable GitHub pages in the GitHub settings, selecting the `gh-pages` branch.
+5. Wait for it to build, then go to `<YOUR_GH_USERNAME>.github.io/Balance` to verify it's all working.
+6. Visit `<YOUR_GH_USERNAME>.github.io/Balance/control` and log in with google.
+7. Visit the Firebase authentication page, and copy the UID for your use account.
+8. Use that UID in the Firestore rules and update it [in web/src/routes/control.svelte](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/routes/control.svelte#L33).
 
 Wait for it to redeploy, and you should now be able to access the control page!
 
