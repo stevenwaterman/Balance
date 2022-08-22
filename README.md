@@ -65,7 +65,7 @@ These are just the parts I used, alternatives will work
 
 1. Create a [Firebase](https://console.firebase.google.com/) account and a new project.
 1. Under the project settings, download the service account key, and save it as `credentials.json` in the root of this repository.
-1. Add a web app, and copy the `firebaseConfig` out of the `npm` SDK setup and configuration, into [web/src/lib/initFirebase.ts](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/lib/initFirebase.ts#L14).
+1. In the project settings, add a web app, and copy the `firebaseConfig` out of the `npm` SDK setup and configuration, into [web/src/lib/initFirebase.ts](https://github.com/stevenwaterman/Balance/blob/03ef952fb352bc81930753e494502babe5fda147/web/src/lib/initFirebase.ts#L14).
 1. Enable Authentication.
 1. Enable the Google sign-in provider for authentication
 1. Add your domain (eg `stevenwaterman.uk` or `stevenwaterman.github.io` etc) to the `Authorized Domains` under `Settings`.
