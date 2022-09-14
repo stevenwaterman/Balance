@@ -4,9 +4,9 @@ import fs from "fs";
 import fsPromise from "fs/promises";
 
 type Score = { 
-  personal: number;
-  professional: number;
-  spiritual: number;
+  serenity: number;
+  growth: number;
+  belonging: number;
   timestamp: number;
 }
 type DataFile = Record<number, [number, number, number]>;
@@ -43,7 +43,7 @@ function getDateBounds(date: Date): { start: number; end: number } {
 }
 
 function formatScore(score: Score): [number, number, number] {
-  return [score.personal, score.professional, score.spiritual];
+  return [score.serenity, score.growth, score.belonging];
 }
 
 async function fetchData(start: Date, end: Date): Promise<Score[]> {
@@ -108,7 +108,7 @@ async function fetchAndSave(start: Date, end: Date) {
 }
 
 async function saveAll() {
-  const start = new Date("2022-06-29T00:00:00Z");
+  const start = new Date("2022-09-14T00:00:00Z");
   const end = new Date();
   await fetchAndSave(start, end);
 }
@@ -118,7 +118,7 @@ async function saveSinceLatest() {
     .catch(error => {
       console.log("Error reading latest time");
       console.log(error);
-      return "2022-06-29T00:00:00Z"
+      return "2022-09-14T00:00:00Z"
     });
   const start = new Date(latestTime);
   const end = new Date();

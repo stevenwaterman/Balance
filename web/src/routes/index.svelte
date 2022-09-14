@@ -8,16 +8,16 @@
   onSnapshot(currentDoc, doc => {
     const data = doc.data();
     if (data !== undefined) {
-      personal = data.personal;
-      professional = data.professional;
-      spiritual = data.spiritual;
+      serenity = data.serenity;
+      growth = data.growth;
+      belonging = data.belonging;
       timestamp = data.timestamp;
     }
   });
 
-  let personal: number | undefined = undefined;
-  let professional: number | undefined = undefined;
-  let spiritual: number | undefined = undefined;
+  let serenity: number | undefined = undefined;
+  let growth: number | undefined = undefined;
+  let belonging: number | undefined = undefined;
   let timestamp: number | undefined = undefined;
 
   let time: Date | undefined = undefined;
@@ -75,9 +75,9 @@
     font-size: min(8vw, 20vh);
   }
 
-  .personal,
-  .professional,
-  .spiritual {
+  .serenity,
+  .growth,
+  .belonging {
     font-size: min(30vw, 50vh);
     font-weight: bold;
     color: var(--black);
@@ -103,9 +103,9 @@
       display: none;
     }
 
-    .personal,
-    .professional,
-    .spiritual {
+    .serenity,
+    .growth,
+    .belonging {
       font-size: min(30vw, 60vh);
     }
   }
@@ -119,29 +119,29 @@
   <p class="title">(Live) How I Feel:</p>
 
   <div class="scores">
-    {#key personal}
-      <div class="col" style="grid-column: 1; grid-row: 1;" title="My mental health, physical health, and general happiness">
-        {#if personal}
-          <span transition:blur class="personal">{personal}</span>
-          <span transition:blur class="label">Personal</span>
+    {#key serenity}
+      <div class="col" style="grid-column: 1; grid-row: 1;" title="The absence of unhappiness, being relaxed rather than stressed, and finding self-acceptance">
+        {#if serenity}
+          <span transition:blur class="serenity">{serenity}</span>
+          <span transition:blur class="label">Serenity</span>
         {/if}
       </div>
     {/key}
   
-    {#key professional}
-      <div class="col" style="grid-column: 2; grid-row: 1;" title="How much I'm learning, how much I am enjoying my work, and how competent I feel">
-        {#if professional}
-          <span transition:blur class="professional">{professional}</span>
-          <span transition:blur class="label">Professional</span>
+    {#key growth}
+      <div class="col" style="grid-column: 2; grid-row: 1;" title="Mastery of my craft, improving things, achieving my purpose, taking advantage of opportunities, and carving my own path">
+        {#if growth}
+          <span transition:blur class="growth">{growth}</span>
+          <span transition:blur class="label">Growth</span>
         {/if}
       </div>
     {/key}
   
-    {#key spiritual}
-      <div class="col" style="grid-column: 3; grid-row: 1;" title="A sense of belonging, knowing that I have found my place in the world, and true belief in what I'm working towards.">
-        {#if spiritual}
-          <span transition:blur class="spiritual">{spiritual}</span>
-          <span transition:blur class="label">Spiritual</span>
+    {#key belonging}
+      <div class="col" style="grid-column: 3; grid-row: 1;" title="Having a purpose in life, closeness with others, ability to be myself, not having to try and fit in, and feeling valuable">
+        {#if belonging}
+          <span transition:blur class="belonging">{belonging}</span>
+          <span transition:blur class="label">Belonging</span>
         {/if}
       </div>
     {/key}

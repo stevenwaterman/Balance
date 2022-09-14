@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { enablePersonalStore, enableProfessionalStore, enableSpiritualStore } from "$lib/visConfig";
+  import { enableSerenityStore, enableGrowthStore, enableBelongingStore } from "$lib/visConfig";
   import LegendElement from "./LegendElement.svelte";
 </script>
 
@@ -18,7 +18,7 @@
 </style>
 
 <div class="container">
-  <LegendElement label="Personal" store={enablePersonalStore} color="red" />
-  <LegendElement label="Professional" store={enableProfessionalStore} color="green" />
-  <LegendElement label="Spiritual" store={enableSpiritualStore} color="blue" />
+  <LegendElement label="Serenity" store={enableSerenityStore} color="red" />
+  <LegendElement label="Growth" store={enableGrowthStore} color="green" />
+  <LegendElement label="Belonging" store={enableBelongingStore} color="blue" />
 </div>

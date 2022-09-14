@@ -23,25 +23,25 @@
 
   type DbScore = {
     timestamp: number;
-    personal: number;
-    professional: number;
-    spiritual: number;
+    serenity: number;
+    growth: number;
+    belonging: number;
   }
 
   let remoteScore: DbScore | undefined;
   let localScore: DbScore = {
     timestamp: 0,
-    personal: 0,
-    professional: 0,
-    spiritual: 0
+    serenity: 0,
+    growth: 0,
+    belonging: 0
   };
 
   function requiresUpdate(local: DbScore | undefined, remote: DbScore | undefined): boolean {
     if (local === undefined) return false;
     if (remote === undefined) return true;
-    if (local.personal !== remote.personal) return true;
-    if (local.professional !== remote.professional) return true;
-    if (local.spiritual !== remote.spiritual) return true;
+    if (local.serenity !== remote.serenity) return true;
+    if (local.growth !== remote.growth) return true;
+    if (local.belonging !== remote.belonging) return true;
     return false;
   }
 
@@ -91,7 +91,7 @@
 <div class="container">
   <span>Sliders</span>
 
-  <Slider label="Personal" bind:value={localScore.personal} />
-  <Slider label="Professional" bind:value={localScore.professional} />
-  <Slider label="Spiritual" bind:value={localScore.spiritual} />
+  <Slider label="Serenity" bind:value={localScore.serenity} />
+  <Slider label="Growth" bind:value={localScore.growth} />
+  <Slider label="Belonging" bind:value={localScore.belonging} />
 </div>

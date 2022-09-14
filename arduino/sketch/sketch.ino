@@ -1,18 +1,18 @@
-int personalLatch = 2;
-int professionalLatch = 5;
-int spiritualLatch = 8;
+int serenityLatch = 2;
+int growthLatch = 5;
+int belongingLatch = 8;
 
-int personalData = 3;
-int professionalData = 6;
-int spiritualData = 9;
+int serenityData = 3;
+int growthData = 6;
+int belongingData = 9;
 
-int personalClock = 4;
-int professionalClock = 7;
-int spiritualClock = 10;
+int serenityClock = 4;
+int growthClock = 7;
+int belongingClock = 10;
 
-int personalPot = A5;
-int professionalPot = A4;
-int spiritualPot = A3;
+int serenityPot = A5;
+int growthPot = A4;
+int belongingPot = A3;
 
 int led_a = 2;
 int led_b = 16;
@@ -39,75 +39,75 @@ int dash = led_g;
 void setup() {
     Serial.begin(9600);
   
-    pinMode(personalLatch, OUTPUT);
-    pinMode(professionalLatch, OUTPUT);
-    pinMode(spiritualLatch, OUTPUT);
+    pinMode(serenityLatch, OUTPUT);
+    pinMode(growthLatch, OUTPUT);
+    pinMode(belongingLatch, OUTPUT);
     
-    pinMode(personalData, OUTPUT);
-    pinMode(professionalData, OUTPUT);
-    pinMode(spiritualData, OUTPUT);
+    pinMode(serenityData, OUTPUT);
+    pinMode(growthData, OUTPUT);
+    pinMode(belongingData, OUTPUT);
     
-    pinMode(personalClock, OUTPUT);
-    pinMode(professionalClock, OUTPUT);
-    pinMode(spiritualClock, OUTPUT);
+    pinMode(serenityClock, OUTPUT);
+    pinMode(growthClock, OUTPUT);
+    pinMode(belongingClock, OUTPUT);
     
-    display(-1, personalLatch, personalClock, personalData);
-    display(-1, professionalLatch, professionalClock, professionalData);
-    display(-1, spiritualLatch, spiritualClock, spiritualData);
+    display(-1, serenityLatch, serenityClock, serenityData);
+    display(-1, growthLatch, growthClock, growthData);
+    display(-1, belongingLatch, belongingClock, belongingData);
 }
 
-int personalDisplay = 0;
-int personalSlider = 0;
+int serenityDisplay = 0;
+int serenitySlider = 0;
 
-int professionalDisplay = 0;
-int professionalSlider = 0;
+int growthDisplay = 0;
+int growthSlider = 0;
 
-int spiritualDisplay = 0;
-int spiritualSlider = 0;
+int belongingDisplay = 0;
+int belongingSlider = 0;
 
 void loop() {
   bool changed = false;
   
-  int newPersonalSlider = read(personalPot);
-  if (newPersonalSlider != -1 && personalSlider != newPersonalSlider) {
+  int newSerenitySlider = read(serenityPot);
+  if (newSerenitySlider != -1 && serenitySlider != newSerenitySlider) {
     changed = true;
-    personalDisplay = newPersonalSlider;
-    personalSlider = newPersonalSlider;
-    display(personalDisplay, personalLatch, personalClock, personalData);
+    serenityDisplay = newSerenitySlider;
+    serenitySlider = newSerenitySlider;
+    display(serenityDisplay, serenityLatch, serenityClock, serenityData);
   }
 
-  int newProfessionalSlider = read(professionalPot);
-  if (newProfessionalSlider != -1 && professionalSlider != newProfessionalSlider) {
+  int newGrowthSlider = read(growthPot);
+  if (newGrowthSlider != -1 && growthSlider != newGrowthSlider) {
     changed = true;
-    professionalDisplay = newProfessionalSlider;
-    professionalSlider = newProfessionalSlider;
-    display(professionalDisplay, professionalLatch, professionalClock, professionalData);
+    growthDisplay = newGrowthSlider;
+    growthSlider = newGrowthSlider;
+    display(growthDisplay, growthLatch, growthClock, growthData);
   }
 
-  int newSpiritualSlider = read(spiritualPot);
-  if (newSpiritualSlider != -1 && spiritualSlider != newSpiritualSlider) {
+  int newBelongingSlider = read(belongingPot);
+  if (newBelongingSlider != -1 && belongingSlider != newBelongingSlider) {
     changed = true;
-    spiritualDisplay = newSpiritualSlider;
-    spiritualSlider = newSpiritualSlider;
-    display(spiritualDisplay, spiritualLatch, spiritualClock, spiritualData);
+    belongingDisplay = newBelongingSlider;
+    belongingSlider = newBelongingSlider;
+    display(belongingDisplay, belongingLatch, belongingClock, belongingData);
   }
 
   if (changed) {
     char strBuf[3];
-    sprintf(strBuf, "%d%d%d", personalDisplay, professionalDisplay, spiritualDisplay);
+    sprintf(strBuf, "%d%d%d", serenityDisplay, growthDisplay, belongingDisplay);
     Serial.println(strBuf);
   }
 
   if (Serial.available() > 0) {
     String dataString = Serial.readStringUntil('\n');
     
-    personalDisplay = dataString[0] - '0';
-    professionalDisplay = dataString[1] - '0';
-    spiritualDisplay = dataString[2] - '0';
+    serenityDisplay = dataString[0] - '0';
+    growthDisplay = dataString[1] - '0';
+    belongingDisplay = dataString[2] - '0';
 
-    display(personalDisplay, personalLatch, personalClock, personalData);
-    display(professionalDisplay, professionalLatch, professionalClock, professionalData);
-    display(spiritualDisplay, spiritualLatch, spiritualClock, spiritualData);
+    display(serenityDisplay, serenityLatch, serenityClock, serenityData);
+    display(growthDisplay, growthLatch, growthClock, growthData);
+    display(belongingDisplay, belongingLatch, belongingClock, belongingData);
   }
 
   delay(16);

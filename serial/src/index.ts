@@ -5,9 +5,9 @@ import fs from "fs";
 
 type Score = {
   timestamp: number;
-  personal: number;
-  professional: number;
-  spiritual: number;
+  serenity: number;
+  growth: number;
+  belonging: number;
 }
 
 const port = new SerialPort({
@@ -16,9 +16,9 @@ const port = new SerialPort({
 });
 
 let timer: NodeJS.Timeout | null = null;
-let personal: number = 0;
-let professional: number = 0;
-let spiritual: number = 0;
+let serenity: number = 0;
+let growth: number = 0;
+let belonging: number = 0;
 
 const credentials = JSON.parse(fs.readFileSync("../credentials.json", "utf-8"));
 const app = initializeApp({credential: cert(credentials)});
@@ -29,20 +29,20 @@ const historicCollection = db.collection("/historic");
 
 async function toFirestore() {
   const timestamp = Math.round(new Date().getTime() / 1000);
-  const data: Score = { personal, professional, spiritual, timestamp };
+  const data: Score = { serenity, growth, belonging, timestamp };
   
   await Promise.all([
     currentDoc.update(data),
     historicCollection.add(data)
   ]);
-  console.log(`Updated ${personal}${professional}${spiritual}`);
+  console.log(`Updated ${serenity}${growth}${belonging}`);
 }
 
 const lineStream = port.pipe(new ReadlineParser());
 lineStream.on("data", (data: string) => {
-  const newPersonal = parseInt(data[0]);
-  const newProfessional = parseInt(data[1]);
-  const newSpiritual = parseInt(data[2]);
+  const newSerenity = parseInt(data[0]);
+  const newGrowth = parseInt(data[1]);
+  const newBelonging = parseInt(data[2]);
 
   if (timer !== null) {
     clearTimeout(timer);
@@ -51,28 +51,28 @@ lineStream.on("data", (data: string) => {
   timer = setTimeout(() => {
     timer = null;
     if (
-      personal !== newPersonal ||
-      professional !== newProfessional ||
-      spiritual !== newSpiritual
+      serenity !== newSerenity ||
+      growth !== newGrowth ||
+      belonging !== newBelonging
     ) {
-      personal = newPersonal;
-      professional = newProfessional;
-      spiritual = newSpiritual;
+      serenity = newSerenity;
+      growth = newGrowth;
+      belonging = newBelonging;
       toFirestore();
     }
   }, 1_000);
 });
 
 function toBalanceBox() {
-  const data = `${personal}${professional}${spiritual}`;
+  const data = `${serenity}${growth}${belonging}`;
   console.log(`From Remote: ${data}`);
   port.write(`${data}\n`, "ascii");
 }
 
 currentDoc.onSnapshot(snapshot => {
   const data = snapshot.data() as Score;
-  personal = data.personal;
-  professional = data.professional;
-  spiritual = data.spiritual;
+  serenity = data.serenity;
+  growth = data.growth;
+  belonging = data.belonging;
   toBalanceBox();
 });

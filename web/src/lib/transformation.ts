@@ -5,7 +5,7 @@ export type SingleScore = { date: number; value: number };
 
 function extractSingleScore(
   data: Score[],
-  scoreType: "personal" | "professional" | "spiritual"
+  scoreType: "serenity" | "growth" | "belonging"
 ): SingleScore[] {
   return data.map(elem => ({ 
     date: elem.date.getTime(),
@@ -107,7 +107,7 @@ function interpolate(before: SingleScore, after: SingleScore, targetDate: number
 
 export function getDataSeries(
   data: Score[],
-  scoreType: "personal" | "professional" | "spiritual",
+  scoreType: "serenity" | "growth" | "belonging",
   windowMillis: number,
   desiredRange: { start: Date, end: Date }
 ): SingleScore[] {

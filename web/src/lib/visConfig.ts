@@ -12,9 +12,9 @@ function togglableBoolStore(init: boolean): BoolWritable {
   };
 }
 
-export const enablePersonalStore: BoolWritable = togglableBoolStore(true);
-export const enableProfessionalStore: BoolWritable = togglableBoolStore(true);
-export const enableSpiritualStore: BoolWritable = togglableBoolStore(true);
+export const enableSerenityStore: BoolWritable = togglableBoolStore(true);
+export const enableGrowthStore: BoolWritable = togglableBoolStore(true);
+export const enableBelongingStore: BoolWritable = togglableBoolStore(true);
 
 export const windowFractionStore: Writable<number> = writable(0.1);
 

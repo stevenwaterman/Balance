@@ -1,9 +1,9 @@
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 export type Score = {
   date: Date;
-  personal: Digit;
-  professional: Digit;
-  spiritual: Digit;
+  serenity: Digit;
+  growth: Digit;
+  belonging: Digit;
 };
 
 class DataSet {
@@ -57,13 +57,13 @@ class DataSet {
         .catch(() => ({}));
 
     const scores: Score[] = Object.entries(response)
-      .map(([timestampString, [personal, professional, spiritual]]) => {
+      .map(([timestampString, [serenity, growth, belonging]]) => {
         const timestamp = parseInt(timestampString);
         return {
           date: new Date(timestamp * 1000),
-          personal: personal as Digit,
-          professional: professional as Digit,
-          spiritual: spiritual as Digit
+          serenity: serenity as Digit,
+          growth: growth as Digit,
+          belonging: belonging as Digit
         };
       });
 
