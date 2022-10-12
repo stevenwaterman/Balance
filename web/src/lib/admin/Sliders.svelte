@@ -29,43 +29,29 @@
   }
 
   let remoteScore: DbScore | undefined;
-  let localScore: DbScore = {
-    timestamp: 0,
-    serenity: 0,
-    growth: 0,
-    belonging: 0
-  };
+  let localScore: DbScore | undefined;
 
-  function requiresUpdate(local: DbScore | undefined, remote: DbScore | undefined): boolean {
-    if (local === undefined) return false;
-    if (remote === undefined) return true;
+  function needsUpdate(local: DbScore, remote: DbScore): boolean {
     if (local.serenity !== remote.serenity) return true;
     if (local.growth !== remote.growth) return true;
     if (local.belonging !== remote.belonging) return true;
     return false;
   }
 
-  let timer: NodeJS.Timeout | undefined = undefined;
+  function update(local: DbScore | undefined, remote: DbScore | undefined) {
+    if (local === undefined) return;
+    if (remote === undefined) return;
+    if (!needsUpdate(local, remote)) return;
 
-  function setTimer(score: DbScore) {
-    if (timer !== undefined) clearTimeout(timer);
-    if (!requiresUpdate(score, remoteScore)) return;
-
-    const scoreCapture = {
-      ...score,
+    const score: DbScore = {
+      ...local,
       timestamp: Math.floor(new Date().getTime() / 1000)
-    };
-
-    timer = setTimeout(() => {
-      timer = undefined;
-      if (requiresUpdate(scoreCapture, remoteScore)) {
-        setDoc(currentDoc, scoreCapture)
-        addDoc(historicCollection, scoreCapture)
-      }
-    }, 5000);
+    }
+    setDoc(currentDoc, score)
+    addDoc(historicCollection, score)
   }
 
-  $: if(localScore !== undefined) setTimer(localScore);
+  $: update(localScore, remoteScore);
 </script>
 
 <style>
@@ -91,7 +77,9 @@
 <div class="container">
   <span>Sliders</span>
 
-  <Slider label="Serenity" bind:value={localScore.serenity} />
-  <Slider label="Growth" bind:value={localScore.growth} />
-  <Slider label="Belonging" bind:value={localScore.belonging} />
+  {#if localScore}
+    <Slider label="Serenity" bind:value={localScore.serenity} />
+    <Slider label="Growth" bind:value={localScore.growth} />
+    <Slider label="Belonging" bind:value={localScore.belonging} />
+  {/if}
 </div>
