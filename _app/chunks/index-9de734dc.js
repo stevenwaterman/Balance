@@ -1,0 +1,1 @@
+import"./index-093668eb.js";function a(t){return t<.5?4*t*t*t:.5*Math.pow(2*t-2,3)+1}function b(t,{delay:e=0,duration:r=400,easing:i=a,amount:p=5,opacity:s=0}={}){const o=getComputedStyle(t),n=+o.opacity,u=o.filter==="none"?"":o.filter,l=n*(1-s);return{delay:e,duration:r,easing:i,css:(f,c)=>`opacity: ${n-l*c}; filter: ${u} blur(${c*p}px);`}}export{b};
