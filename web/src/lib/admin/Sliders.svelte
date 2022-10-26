@@ -21,7 +21,11 @@
   $: historicCollection = collection(db, "historic");
 
   onMount(() => {
-    onSnapshot(currentDoc, (doc) => {
+    onSnapshot(currentDoc, { includeMetadataChanges: true }, (doc) => {
+      if (!doc.metadata.hasPendingWrites && remoteScore !== undefined) {
+        updating--;
+      }
+
       const data = doc.data();
       if (data !== undefined) {
         remoteScore = { ...data } as any;
@@ -52,7 +56,10 @@
     return false;
   }
 
-  function update(local: DbScore) {
+  function update(local: DbScore, remote: DbScore) {
+    if (!needsUpdate(local, remote)) return;
+    updating++;
+
     const score: DbScore = {
       ...local!,
       timestamp: Math.floor(new Date().getTime() / 1000),
@@ -61,14 +68,12 @@
     addDoc(historicCollection, score);
   }
 
-  let outdated: boolean;
-  $: outdated = needsUpdate(localScore, remoteScore);
-
-  $: if (outdated && localScore) update(localScore);
+  let updating: number = 0;
+  $: if (localScore && remoteScore) update(localScore, remoteScore);
 </script>
 
 <div class="container">
-  <span class:outdated>Sliders</span>
+  <span class:outdated={updating > 0}>Sliders</span>
 
   {#if localScore}
     <Slider label="Serenity" bind:value={localScore.serenity} />
